@@ -15,7 +15,7 @@
         {{ seller.description }}/{{ seller.deliveryTime }} minutes
       </div>
 
-      <div v-if="seller.supports" class="support">
+      <div v-if="seller.supports" class="support" @click.native ="showDetail" style="cursor: pointer">
         <span class="icon" :class="classMap[seller.supports[1].type]"></span>
         <span class="text">{{ seller.supports[0].description }}</span>
     </div>
@@ -26,12 +26,24 @@
     </div>
   </div>
 
-  <div class="bulletin-wrapper">
+  <div class="bulletin-wrapper" @click="showDetail">
     <span class="bulletin-title"></span><span class="bulletin-text">{{ seller.bulletin }}</span>
     <i class="icon-keyboard_arrow_right"></i>
   </div>
   <div class="background">
     <img :src="seller.avatar" alt="background-avatar" width="100%" height="100%">
+  </div>
+  <!-- we use v-show here so that it can set the display: none -->
+  <div v-show="detailShow" class="detail">
+    <div class="detail-wrapper clearfix">
+      <div class="detail-main">
+        {{ seller.bulletin }}
+        {{ seller.bulletin }}
+      </div>
+    </div>
+    <div class="detail-close">
+      <i class="icon-close"></i>
+    </div>
   </div>
 </div>
 </template>
@@ -41,6 +53,17 @@ export default {
   props: {
     seller: {
       type: Object
+    }
+  },
+  data () {
+    return {
+      detailShow: false
+    }
+  },
+  methods: {
+    showDetail () {
+      console.log('hello world')
+      this.detailShow = true
     }
   },
   created () {
@@ -164,5 +187,28 @@ export default {
       height: 100%
       z-index: -1
       filter: blur(10px)
+    .detail
+      position: fixed
+      z-index: 100
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      overflow: auto
+      background-color: rgba(7,27,27,0.8)
+      .detail-wrapper
+        min-height: 100%
+        .detail-main
+          margin-top: 64px;
+          padding-bottom: 64px
+      .detail-close
+        position: relative
+        width: 32px
+        height: 32px
+        margin: -64px auto 0 auto
+        clear: both
+        font-size: 32px
+
+
 </style>
 
